@@ -146,6 +146,11 @@
 
         btn6.oncontextmenu = function(event){
             event.preventDefault()
+            console.log(img2.className)     // 문자열 띄워쓰기로 구분됨
+            console.log(img2.classList)     // 배열형식, 클래스 하나가 멤버
+            console.log(img2.classList.replace('hidden','show'))
+
+            // boolean 값을 뽑아내기 위해서 hidden이 포함되어 있는지를 확인
             const flag = img2.classList.contains('hidden')
             if(flag){
                 img2.classList.remove('hidden')
