@@ -1,0 +1,10 @@
+@charset "utf-8";
+
+fieldset{
+    width: 400px;
+}
+
+.item{
+    display: flex;
+    border : 1px solid black;
+}
