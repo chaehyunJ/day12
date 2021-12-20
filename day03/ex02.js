@@ -10,6 +10,8 @@ function filterHandler(event){
     // NodeList 가 아닌 Array의 함수 중에서 map을 사용한다
     // 객체의 배열이 있을 때, 객체의 특정 속성만 추출하여 새로운 간단한 배열로 반환한다
 
+    // Set<> set = get(i).keyset()
+    // set.value
     const filter = checkFilter.map(v => +v.value)
     console.log(filter)
 

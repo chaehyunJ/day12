@@ -1,64 +1,63 @@
 function getDataArray(){
     const arr = [
         {
+            img : "돈까스.png",
             name : '돈까스',
-            price : '6900',
-            img : "돈까스.png"
+            price : '16900',
+            cate : '일식'
         },
         {
+            img : "떡볶이.jpg",
             name : '떡볶이',
-            price : '12000',
-            img : "떡볶이.jpg"
+            price : '32000',
+            cate : '한식'
         },
         {
+            img : "로제떡볶이.jpg",
             name : '로제떡볶이',
-            price : '15000',
-            img : "로제떡볶이.jpg"
+            price : '25000',
+            cate : '한식'
         },
         {
+            img : "어묵탕.jpg",
             name : '어묵탕',
-            price : '6000',
-            img : "어묵탕.jpg"
+            price : '16000',
+            cate : '일식'
         },
         {
+            img : "쫄면.jpg",
             name : '쫄면',
-            price : '5000',
-            img : "쫄면.jpg"
+            price : '15000',
+            cate : '중식'
         }
     ]
     return arr
 }
 
 function getDom(data){
-    console.log(arr)
+    // console.log(arr)
     arr.sort((a,b) => a.name > b.name ? 1 : -1)
+    
+    const item = document.createElement('div')
+    item.classList.add('item')
 
-    const element = document.createElement('div')
-    console.log(element)
-    element.classList.add('item')
-
-    const div1 = document.createElement('div')
-    const img = document.createElement('img')
-    img.width = '100'
-    img.height = '100'
-    img.src = 'img/' + data.img
-
-    div1.appendChild(img)
-
-    const div2 = document.createElement('div')
-    const name = document.createElement('div')
-    const price = document.createElement('div')
-
-    name.innerText = '메뉴 이름 : ' + data.name
-    price.innerText = '가격 : ' + data.price
-
-    div2.appendChild(name)
-    div2.appendChild(price)
-
-    element.appendChild(div1)
-    element.appendChild(div2)
-
-    return element
+    for(key in data){
+        const value = data[key]
+        const div = document.createElement('div')
+        div.classList.add(key)
+        if(key == 'img'){
+            const img = document.createElement('img')
+            img.src = 'img/' + data.img
+            img.height = 200
+            img.width = 280
+            div.appendChild(img)
+        }
+        else{
+            div.innerText = key + ':' + value
+        }
+        item.appendChild(div)
+    }
+    return item
 }
 
 
@@ -72,8 +71,8 @@ function render(target, dom){
         target.innerHTML += dom
     }
     else{
-    console.log(arr)
-    console.log(dom)
+    // console.log(arr)
+    // console.log(dom)
         arr.forEach(fd =>{
             const fd1 = getDom(fd)
             target.appendChild(fd1)
@@ -82,6 +81,51 @@ function render(target, dom){
     }
 }
 
-function filterHandler(){
+function filterHandler(event){
+    console.log(event.target)
+    const checkedFilter = Array.from(document.querySelectorAll('.root > .left input:checked'))
+    console.log(checkedFilter)
 
+    const ob = {
+        priceFilter : null,
+        cateFilter : null
+    }
+
+    checkedFilter.forEach(e => ob[e.name] = e.value)
+    console.log(ob)
+
+    // const filter1 = checkedFilter.map(v => +v.value)
+    // console.log(filter1)
+
+    // const filter2 = checkedFilter.map(v => v.value)
+    // console.log(filter2)
+    right.innerHTML = ''
+
+    if(ob.priceFilter == '0'){
+        arr.forEach(dto =>{
+            const div = getDom(dto)
+            right.appendChild(div)
+        })
+    }
+    const filterArr = arr.filter(dto =>{
+        let flag = true
+
+        const flag1 = +ob.priceFilter <= dto.price && dto.price < +ob.priceFilter + 10000
+        const flag2 = ob.cateFilter == dto.cate
+        
+        if(ob.priceFilter != null)  flag = flag && flag1
+        if(ob.cateFilter != null)   flag = flag && flag2
+        
+        return flag
+    })
+
+ 
+
+  
+    filterArr.forEach(dto => {
+        const div = getDom(dto)
+        right.appendChild(div)
+    })
+
+    
 }

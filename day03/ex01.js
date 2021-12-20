@@ -1,5 +1,3 @@
-
-
 function filterHandler(event){
     console.log(event.target)
     
@@ -18,7 +16,7 @@ function filterHandler(event){
     const ob = {  
         // null일때 필터를 하려고 
         ageFilter : null,   
-        genderFilter : null,
+        genderFilter : null
     }
 
     // for(let i = 0; i < a.length; i++)
@@ -29,6 +27,8 @@ function filterHandler(event){
     // 10 <= age < 20
     // 20 <= age < 30
     // 30 <= age < 40
+
+    // ArrayList<BookDTO> dto = dao.select();
     const filterArr = arr.filter(dto => {
         // let flag = true
         // let age = null
@@ -47,6 +47,9 @@ function filterHandler(event){
         // return flag
         let flag = true
         
+        // 10 <= dto.age < 20
+        // 20 <= dto.age < 30
+        // 30 <= dto.age < 40
         const flag1 = +ob.ageFilter <= dto.age && dto.age < +ob.ageFilter + 10
         const flag2 = ob.genderFilter == dto.gender
 

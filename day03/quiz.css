@@ -1,10 +1,29 @@
 @charset "utf-8";
 
+div {
+    box-sizing: border-box;
+}
 fieldset{
-    width: 400px;
+    width: 100px;
+}
+
+.root{
+    display: flex;
+}
+
+.root > .right {
+    border : 1px solid black;
+    width : 1000px;
+    display: flex;
+    flex-flow: wrap;
 }
 
 .item{
-    display: flex;
-    border : 1px solid black;
+    width : 300px;
+    border : 2px solid black;
+    margin : 10px;
+    padding: 10px;
+    cursor : pointer;
+    box-shadow: 5px 5px grey;
+    border-radius: 10px;
 }
