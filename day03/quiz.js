@@ -34,30 +34,47 @@ function getDataArray(){
     return arr
 }
 
-function getDom(data){
+function getDom(arr){
     // console.log(arr)
-    arr.sort((a,b) => a.name > b.name ? 1 : -1)
+    // arr.sort((a,b) => a.name > b.name ? 1 : -1)
     
-    const item = document.createElement('div')
-    item.classList.add('item')
+    // const item = document.createElement('div')
+    // item.classList.add('item')
 
-    for(key in data){
-        const value = data[key]
-        const div = document.createElement('div')
-        div.classList.add(key)
-        if(key == 'img'){
-            const img = document.createElement('img')
-            img.src = 'img/' + data.img
-            img.height = 200
-            img.width = 280
-            div.appendChild(img)
-        }
-        else{
-            div.innerText = key + ':' + value
-        }
-        item.appendChild(div)
-    }
-    return item
+    // for(key in arr){
+    //     const value = arr[key]
+    //     const div = document.createElement('div')
+    //     div.classList.add(key)
+    //     if(key == 'img'){
+    //         const img = document.createElement('img')
+    //         img.src = 'img/' + arr.img
+    //         img.height = 200
+    //         img.width = 280
+    //         div.appendChild(img)
+    //     }
+    //     else{
+    //         div.innerText = key + ':' + value
+    //     }
+    //     item.appendChild(div)
+    // }
+    // return item
+
+    // let dom = ''
+
+    // arr.forEach(dto => {
+    //     dom += `<div class="item">`
+    //     doo
+    // })
+    let dom = ''
+    arr.forEach(dto => {
+        dom += `<div class="item">`
+        dom += `<div><img src="img/${dto.img}" style="width : 100px;"></div>`
+        dom += `<div><strong>${dto.name}</strong></div>`
+        dom += `<div>가격 : ${dto.price}</div>`
+        dom += `<div>분류 : ${dto.cate}</div>`
+        dom += `</div>`
+    })
+    return dom
 }
 
 
@@ -73,59 +90,75 @@ function render(target, dom){
     else{
     // console.log(arr)
     // console.log(dom)
-        arr.forEach(fd =>{
-            const fd1 = getDom(fd)
-            target.appendChild(fd1)
-        })
-    
+        // arr.forEach(fd =>{
+        //     const fd1 = getDom(fd)
+        //     target.appendChild(fd1)
+        // })
+        target.appendChild(dom)
     }
 }
 
 function filterHandler(event){
     console.log(event.target)
-    const checkedFilter = Array.from(document.querySelectorAll('.root > .left input:checked'))
-    console.log(checkedFilter)
+    const cateFilterArray = Array.from(document.querySelectorAll('.root > .left input[name="cateFilter"]:checked')).map(v => v.value)
+    const priceFilterArray = Array.from(document.querySelectorAll('.root > .left input[name="priceFilter"]:checked')).map(v => +v.value)
+    const sort = document.querySelector('input[name="sort"]:checked')
+    
+    console.log(cateFilterArray)
+    console.log(priceFilterArray)
+    console.log(sort)
 
-    const ob = {
-        priceFilter : null,
-        cateFilter : null
-    }
+    // const ob = {
+    //     priceFilter : null,
+    //     cateFilter : null
+    // }
 
-    checkedFilter.forEach(e => ob[e.name] = e.value)
-    console.log(ob)
+    // checkedFilter.forEach(e => ob[e.name] = e.value)
+    // console.log(ob)
 
     // const filter1 = checkedFilter.map(v => +v.value)
     // console.log(filter1)
 
     // const filter2 = checkedFilter.map(v => v.value)
     // console.log(filter2)
-    right.innerHTML = ''
+    // right.innerHTML = ''
 
-    if(ob.priceFilter == '0'){
-        arr.forEach(dto =>{
-            const div = getDom(dto)
-            right.appendChild(div)
-        })
-    }
-    const filterArr = arr.filter(dto =>{
+    // if(ob.priceFilter == '0'){
+    //     arr.forEach(dto =>{
+    //         const div = getDom(dto)
+    //         right.appendChild(div)
+    //     })
+    // }
+    const result = arr.filter(dto =>{
+
+        // const flag1 = +ob.priceFilter <= dto.price && dto.price < +ob.priceFilter + 10000
+        // const flag2 = ob.cateFilter == dto.cate
+
+        const flag1 = cateFilterArray.includes(dto.cate)
+        const flag2 = priceFilterArray.includes(Math.floor(dto.price/10000) * 10000)
+     
         let flag = true
 
-        const flag1 = +ob.priceFilter <= dto.price && dto.price < +ob.priceFilter + 10000
-        const flag2 = ob.cateFilter == dto.cate
-        
-        if(ob.priceFilter != null)  flag = flag && flag1
-        if(ob.cateFilter != null)   flag = flag && flag2
+        if(cateFilterArray != 0)  flag = flag && flag1
+        if(priceFilterArray != 0)   flag = flag && flag2
         
         return flag
     })
+          
+    if(sort != null){
+        switch(sort.value){
+        case 'price':
+            result.sort((a,b) => +a[sort.value] > +b[sort.value] ? 1 : -1)
+            break
+        case 'name':
+            result.sort((a,b) => a[sort.value] > b[sort.value] ? 1: -1)
+            break
+        }
+        
 
- 
+    }
 
-  
-    filterArr.forEach(dto => {
-        const div = getDom(dto)
-        right.appendChild(div)
-    })
+    render(right, getDom(result))
 
     
 }

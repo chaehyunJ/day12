@@ -92,6 +92,35 @@
                 content.appendChild(div)
             })
         }
+
+        // 필터 함수
+        function filterHandler(event){
+            const filter = Array.from(document.querySelectorAll('input:checked')).map(v => {
+                if(v.name != 'all'){
+                    return +v.name.substr(5)    // price10000 이라서 substr로 잘라준다
+                }
+                document.querySelectorAll('input:checked').forEach(input => {
+                    input.checked = ''
+                })
+                event.target.checked = 'checked'
+                return v.name
+            })
+            // 전체 찍어낼 곳
+            if(filter == 0 || filter.includes('all')){
+                content.innerHTML = ''
+                showFoodList()
+                return 
+            }
+            const result = arr.filter(dto => {
+                const dtoPrice = Math.floor(dto.price / 10000) * 10000
+                return filter.includes(dtoPrice)
+            })
+            content.innerHTML = ''
+            result.forEach(food => {
+                const div = JSONtoHTML(food)
+                content.appendChild(div)
+            })
+        }
     </script>
 
     <div id="root">
@@ -128,11 +157,11 @@
                 name: '소고기 전골',
                 price: 30000,
             },
-            {
-                img: 'https://lh3.googleusercontent.com/proxy/huXJBbHrNa64YDMhYwFnMoLV-b0tPAgbR4Uhn25xl9C1iVPzEIxeQHFh1AKzBZruwXyicUJ1ohiv1dbtzaNqlvCZ961tN6B5CxFxwA',
-                name: '치킨',
-                price: 20000,
-            },
+            // {
+            //     img: 'https://lh3.googleusercontent.com/proxy/huXJBbHrNa64YDMhYwFnMoLV-b0tPAgbR4Uhn25xl9C1iVPzEIxeQHFh1AKzBZruwXyicUJ1ohiv1dbtzaNqlvCZ961tN6B5CxFxwA',
+            //     name: '치킨',
+            //     price: 20000,
+            // },
             {
                 img: 'http://imagescdn.gettyimagesbank.com/500/201709/a10985218.jpg',
                 name: '양념갈비',
@@ -161,8 +190,8 @@
         const content = document.querySelector('.content')
 
         // 배열의 데이터를 (원하는 기준으로 정렬하여) 화면에 표시한다
-        const btnList = document.querySelectorAll('.sortBtn')
-        btnList.forEach(btn => btn.addEventListener('click', sortFoodArr))
+        const filterBoxList = document.querySelectorAll('.filetrMenu input')
+        filterBoxList.forEach(btn => btn.addEventListener('click', filterHandler))
             
         // 문서 로딩이 끝나면 실행할 함수
         window.onload = showFoodList
@@ -177,23 +206,6 @@
         // console.log(jsonObject)
     </script>
     
-    <script>
-        
-        const a = document.querySelector('input[name="price10000"]')
-        a.checked = 'checked'
-        const b = document.querySelectorAll('.b')
-        console.log(b)
-        b.forEach(function(){
-           if(b.getAttribute('checked')){
 
-           }
-        })
-        console.log(a.checked)
-        const p1 = arr.filter(ob => ob.price >= 20000)
-        const p2 = arr.filter(ob => ob.price >= 30000)
-        console.log(p1)
-        console.log(p2)
-
-    </script>
 </body>
 </html>
