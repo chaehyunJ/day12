@@ -7,61 +7,58 @@
     <title>Document</title>
 </head>
 <body>
+    <!-- 구글 차트 라이브러리 -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <h1>구글 차트 연습 1</h1>
+    <hr>
+
+    <div class="root"></div>
+
+    <!-- 표를 그려주고 표를 배열로 구성한다 -->
     
     <script>
-        a = 1
-        var b = 2
-        let c = 3
-        const d = 4
-        
-        
+        const root = document.querySelector('.root')
+        console.log(root)
 
-        console.log('a :' + a)
-        console.log('b :' + b)
-        console.log('c :' + c)
-        console.log('d :' + d)
+        google.charts.load('current', {packages : ['corechart'] })
+        // google.charts.setOnLoadCallBack(함수)
+        google.charts.setOnLoadCallback(drawChart)
 
-        function test1(){       
-            console.log(f)  // 선언하기 전에 출력해서 undefined
-
-            // 밖에서 참조가 가능하다 
-            // 알아서 자료형을 맞춰줌
-            // 전역변수 -> 메모리를 많이 잡아먹어서 사용하지 말자 (지양)
-            e = 5
-
-            // 지역변수
-            var f = 6
+        function drawChart(){
+            // 1. 데이터를 배열로 준비
             
-            // 지역변수 함수 안에서만 사용가능
-            let g = 7
+            const arr = [
+                ['짱구', 7],
+                ['단비', 7],
+                ['짱아', 7],
+                ['철수', 7],
+                ['이지은', 30]
+            ]
 
-            // 고정 : java의 finial 값을 선언하면서 할당해주지 않으면 사용불가
-            const h = 8
+            // 2. 테이블 생성
 
-            var i       // 변수를 선언만 하고, 할당하지 않으면 undefined
-            console.log('i :' + i)
+            const table = new google.visualization.DataTable()
 
-            // console.log(h)
-            console.log('e :' + e)
-            console.log('f :' + f)
-            console.log('g :' + g)
-            console.log('h :' + h)
+            // 3. column 추가 (컬럼 이름 및 자료형)
 
-            var b = 10     
-            // let, const : var 가 변수 선언을 명확하게 하지 않아서 등장
-            
-            b = 4
-            console.log('test) b : ' + b)
+            table.addColumn('string', '이름')
+            table.addColumn('number', '나이')
+
+            // 4. row 추가  (실제 데이터)
+
+            table.addRows(arr)
+
+            // 5. 시각화 (dom을 지정)
+
+            const opt = {
+                title : '구글 차트 연습, 이름과 나이',
+                width : 900,
+                height : 450
+            }
+            const chart = new google.visualization.BarChart(root)
+            chart.draw(table, opt)
         }
-        test1()
-            console.log('e :' + e)
-
-            // console.log('f :' + f)   // 선언되지 않은 변수를 참조하려해서 에러발생
-            // console.log('g :' + g)
-            // console.log('h :' + h)
-
-            console.log('script) b : '+ b)
     </script>
-
 </body>
 </html>

@@ -64,7 +64,9 @@
         // DOM을 HTML요소에 그린다
         render(tbody, dom)
         
-        const boxList = document.querySelectorAll('.left input[type="checkbox"]')
+        const boxList = Array.from(document.querySelectorAll('.left input[type="checkbox"]'))
+        
+        console.log(boxList)
         // 이벤트 함수 연결
         boxList.forEach(box => box.onclick = filterHandler)
     </script>
